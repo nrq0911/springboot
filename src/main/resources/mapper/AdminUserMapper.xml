@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.AdminUserMapper" >
+  <resultMap id="BaseResultMap" type="com.example.domain.AdminUser" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_ENABLED" property="accountEnabled" jdbcType="BIGINT" />
+    <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;" />
+    <result column="SHA_PASSWORD" property="shaPassword" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <resultMap id="userResult" type="com.example.domain.AdminUser"  >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_ENABLED" property="accountEnabled" jdbcType="BIGINT" />
+    <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;"  />
+    <result column="SHA_PASSWORD" property="shaPassword" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" /> 
+    <collection property="userRole" javaType="java.util.List" resultMap="roleMap" />   
+  </resultMap>
+  
+  <resultMap type="com.example.domain.AdminRole" id="roleMap">
+  		<id column="roleID" property="id" jdbcType="DECIMAL" />
+  		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    	<result column="roleNAME" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.domain.AdminUser" >
+    insert into admin_user (ID, EMAIL, ACCOUNT_ENABLED, 
+      LOGIN_NAME, NAME, OPERATIONAL_PAYBANKS, 
+      SHA_PASSWORD, VERSION)
+    values (#{id,jdbcType=DECIMAL}, #{email,jdbcType=VARCHAR}, #{accountEnabled,jdbcType=BIGINT}, 
+      #{loginName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{operationalPaybanks,jdbcType=VARCHAR}, 
+      #{shaPassword,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT})
+  </insert>
+  <select id="getAllUsers" resultMap="userResult">
+  	 select u.id,u.email,u.ACCOUNT_ENABLED,u.LOGIN_NAME,u.name,u.OPERATIONAL_PAYBANKS,u.SHA_PASSWORD,
+  		u.VERSION,r.id as roleID,r.DESCRIPTION,r.name as roleNAME 
+  	from admin_user u left join admin_user_role ur on u.id = ur.user_id 
+  		left join admin_role r on ur.role_id = r.id ORDER BY u.id, r.id ASC
+  </select>
+  <select id="getUserRoleId" parameterType="map" resultType="java.lang.String">
+  	select role_id from admin_user_role where user_id = #{id}
+  </select>
+  <select id="getAdminUserByLoginName" parameterType="map" resultMap="userResult">
+  	select u.id,u.email,u.ACCOUNT_ENABLED,u.LOGIN_NAME,u.name,u.OPERATIONAL_PAYBANKS,u.SHA_PASSWORD,
+  		u.VERSION,r.id as roleID,r.DESCRIPTION,r.name as roleNAME 
+  	from admin_user u left join admin_user_role ur on u.id = ur.user_id 
+  		left join admin_role r on ur.role_id = r.id 
+  	where u.login_name = #{userName}
+  	ORDER BY u.id, r.id
+  </select>
+</mapper>
