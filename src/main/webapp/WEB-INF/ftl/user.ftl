@@ -14,8 +14,8 @@
 
 <h1>User details</h1>
 
-<p>E-mail: ${user.loginName}</p>
+<p>username: ${user.loginName}</p>
 
-<p>Role: ${user.role}</p>
+<p>information: ${user.toString()}</p>
 </body>
 </html>

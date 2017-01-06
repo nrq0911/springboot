@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by nrq on 2016/12/24.
@@ -21,6 +22,10 @@ public class UserService {
     public AdminUser getUserByUserName(String username){
         logger.info("++++++++++++++>>  " + username + "  <<+++++++");
         return userMapper.getAdminUserByLoginName(username);
+    }
+
+    public List<AdminUser> getAllUsers(){
+        return userMapper.getAllUsers();
     }
 
 
