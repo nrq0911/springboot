@@ -16,7 +16,7 @@ import javax.sql.DataSource;
  * Created by nrq on 2017/1/4.
  */
 @Configuration
-@MapperScan("com.example.mapper")
+@MapperScan("com.example.mapper")  //扫描mapper.java
 public class MybatisConfig {
 
     @Bean
@@ -29,13 +29,17 @@ public class MybatisConfig {
     public SqlSessionFactory sqlSessionFactory()throws Exception{
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
+        //设置实体类的别名
         sqlSessionFactoryBean.setTypeAliasesPackage("com.example.domain");
+        //注册handler
         sqlSessionFactoryBean.setTypeHandlersPackage("com.example.mapper.handler");
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        //加载mapper.xml文件
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mapper/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
+    //配置事务
     @Bean
     public PlatformTransactionManager transactionManager(){
         return new DataSourceTransactionManager(dataSource());
