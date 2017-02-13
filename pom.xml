@@ -64,6 +64,11 @@
 			<artifactId>swagger-springmvc</artifactId>
 			<version>0.9.5</version>
 		</dependency>
+		<!-- activemq 依赖包 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
 		<!-- 应用监控依赖包 -->
 		<dependency>
 			<groupId>net.bull.javamelody</groupId>

@@ -18,7 +18,7 @@ import javax.servlet.ServletException;
  * Created by nrq on 2017/1/9.
  */
 @Configuration
-public class JavaMelodyConfiguration implements ServletContextInitializer {
+public class JavaMelodyConfig implements ServletContextInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
