@@ -28,12 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/public/**","/user/**","/send","/receive").permitAll()
+                .antMatchers("/home", "/public/**","/user/**","/send","/receive").permitAll()
                 .antMatchers("/users/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").hasAuthority("ADMIN")
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("ADMIN")
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .formLogin()
@@ -41,12 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .failureUrl("/login?error")
                 .usernameParameter("email")
                 .permitAll()
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/home")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .deleteCookies("remember-me")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/home")
                 .permitAll()
                 .and()
                 .rememberMe();

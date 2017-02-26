@@ -7,7 +7,7 @@
     <result column="ACCOUNT_ENABLED" property="accountEnabled" jdbcType="BIGINT" />
     <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;" />
+    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;" typeHandler="com.example.mapper.handler.StringArrayTypeHandler" />
     <result column="SHA_PASSWORD" property="shaPassword" jdbcType="VARCHAR" />
     <result column="VERSION" property="version" jdbcType="BIGINT" />
   </resultMap>
@@ -18,7 +18,7 @@
     <result column="ACCOUNT_ENABLED" property="accountEnabled" jdbcType="BIGINT" />
     <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;"  />
+    <result column="OPERATIONAL_PAYBANKS" property="operationalPaybanks" jdbcType="VARCHAR" javaType="[Ljava.lang.String;" typeHandler="com.example.mapper.handler.StringArrayTypeHandler"  />
     <result column="SHA_PASSWORD" property="shaPassword" jdbcType="VARCHAR" />
     <result column="VERSION" property="version" jdbcType="BIGINT" /> 
     <collection property="userRole" javaType="java.util.List" resultMap="roleMap" />   
@@ -30,11 +30,9 @@
     	<result column="roleNAME" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <insert id="insert" parameterType="com.example.domain.AdminUser" >
-    insert into admin_user (ID, EMAIL, ACCOUNT_ENABLED, 
-      LOGIN_NAME, NAME, OPERATIONAL_PAYBANKS, 
-      SHA_PASSWORD, VERSION)
+    insert into admin_user (ID, EMAIL, ACCOUNT_ENABLED, LOGIN_NAME, NAME,SHA_PASSWORD, VERSION)
     values (#{id,jdbcType=DECIMAL}, #{email,jdbcType=VARCHAR}, #{accountEnabled,jdbcType=BIGINT}, 
-      #{loginName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{operationalPaybanks,jdbcType=VARCHAR}, 
+      #{loginName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{shaPassword,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT})
   </insert>
   <select id="getAllUsers" resultMap="userResult">

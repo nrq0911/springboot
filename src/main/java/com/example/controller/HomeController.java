@@ -17,10 +17,10 @@ public class HomeController {
 
     private static final Logger logger = Logger.getLogger(HomeController.class);
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String getHomePage(){
         logger.info("Getting home page");
-        return "home";
+        return "/home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

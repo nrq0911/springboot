@@ -1,14 +1,14 @@
 server:
-  port: 80
+  port: 8080
 
 spring:
   freemarker:
-    template-loader-path: /WEB-INF/ftl
+    template-loader-path: classpath:/templates/ftl
     expose-request-attributes: true
     expose-spring-macro-helpers: true
   datasource:
     name: xiaohuabu
-    url: jdbc:mysql://120.25.138.48:3306/bruce?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/bruce?useUnicode=true&characterEncoding=UTF-8
     username: xhuabu
     password: Xiaohuabu2016
     type: org.apache.tomcat.jdbc.pool.DataSource

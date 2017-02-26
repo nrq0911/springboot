@@ -46,7 +46,6 @@ public class UserController {
             // failed validation
             return "user_create";
         }
-        
         return "redirect:/users";
     }
 

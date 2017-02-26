@@ -8,7 +8,7 @@
 <body>
 <nav role="navigation">
     <ul>
-        <li><a href="/">Home</a></li>
+        <li><a href="/home">Home</a></li>
         <li><a href="/user/create">Create a new user</a></li>
     </ul>
 </nav>
