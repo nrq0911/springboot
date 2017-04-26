@@ -76,12 +76,50 @@
 			<version>1.62.0</version>
 		</dependency>
 
+		<!-- mybatis 分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>4.1.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>user-release</id>
+			<url>http://112.74.169.123:8081/nexus/content/repositories/user-release</url>
+		</repository>
+		<snapshotRepository>
+			<id>user-snapshot</id>
+			<url>http://112.74.169.123:8081/nexus/content/repositories/user-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>public</id>
+			<name>Public Repositories</name>
+			<url>http://112.74.169.123:8081/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+
 
 	<build>
 		<plugins>

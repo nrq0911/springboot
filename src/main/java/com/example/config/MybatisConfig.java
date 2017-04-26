@@ -1,5 +1,7 @@
 package com.example.config;
 
+import com.github.pagehelper.PageHelper;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -11,6 +13,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Created by nrq on 2017/1/4.
@@ -29,6 +32,26 @@ public class MybatisConfig {
     public SqlSessionFactory sqlSessionFactory()throws Exception{
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
+
+        org.apache.ibatis.session.Configuration cfg = new org.apache.ibatis.session.Configuration();
+        cfg.setCacheEnabled(true);   //使全局的映射器启用或禁用缓存
+        cfg.setLazyLoadingEnabled(true); //全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载
+        cfg.setMapUnderscoreToCamelCase(true);  //使用驼峰命名法转换字段
+        cfg.setCallSettersOnNulls(true); //当列的数据为空值时，mybatis在返回的map中并不会存在对应的key,此配置可避免没有空值key
+        sqlSessionFactoryBean.setConfiguration(cfg);
+
+        //分页插件
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("supportMethodsArguments", "true");
+        properties.setProperty("returnPageInfo", "check");
+        properties.setProperty("params", "count=countSql");
+        pageHelper.setProperties(properties);
+
+        //添加插件
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
+
         //设置实体类的别名
         sqlSessionFactoryBean.setTypeAliasesPackage("com.example.domain");
         //注册handler
