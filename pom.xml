@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.1.43</version>
+			<version>1.2.31</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mangofactory</groupId>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>net.bull.javamelody</groupId>
 			<artifactId>javamelody-core</artifactId>
-			<version>1.62.0</version>
+			<version>1.74.0</version>
 		</dependency>
 
 		<!-- mybatis 分页插件 -->
@@ -102,16 +102,6 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>user-release</id>
-			<url>http://112.74.169.123:8081/nexus/content/repositories/user-release</url>
-		</repository>
-		<snapshotRepository>
-			<id>user-snapshot</id>
-			<url>http://112.74.169.123:8081/nexus/content/repositories/user-snapshot</url>
-		</snapshotRepository>
-	</distributionManagement>
 	<repositories>
 		<repository>
 			<id>nexus-aliyun</id>
