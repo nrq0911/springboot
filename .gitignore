@@ -14,6 +14,7 @@ target/
 *.iws
 *.iml
 *.ipr
+*.log
 
 ### NetBeans ###
 nbproject/private/
@@ -22,6 +23,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+logs/
 
 ### mac file
 .DS_Store
