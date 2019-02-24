@@ -27,6 +27,7 @@ public class CuratorWatcher1 {
 					.connectString(Constant.CONNECT_ADDR)
 					.sessionTimeoutMs(Constant.SESSION_TIMEOUT)
 					.retryPolicy(retryPolicy)
+					.namespace("test")
 					.build();
 		
 		//3 建立连接
@@ -49,7 +50,9 @@ public class CuratorWatcher1 {
 				System.out.println("---------------------------------------");
 			}
 		});
-		
+
+		cf.delete();
+
 		Thread.sleep(1000);
 		cf.create().forPath("/super", "123".getBytes());
 		

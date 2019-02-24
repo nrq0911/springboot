@@ -1,7 +1,5 @@
 package com.thread.ta6;
 
-import com.thread.t5.Singleton2;
-
 public class Demo2 {
 	
 	private volatile int signal;
