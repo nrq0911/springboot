@@ -13,7 +13,7 @@ public class FSTTest {
         String inputValues[] = {"cat", "deep", "do", "dog", "dogs"};
         long outputValues[] = {5, 7, 17, 18, 21};
         PositiveIntOutputs outputs = PositiveIntOutputs.getSingleton();
-        Builder<Long> builder = new Builder<Long>(FST.INPUT_TYPE.BYTE1, outputs);
+        Builder<Long> builder = new Builder<>(FST.INPUT_TYPE.BYTE1, outputs);
         IntsRefBuilder scratchInts = new IntsRefBuilder();
         for (int i = 0; i < inputValues.length; i++) {
             BytesRef bytesRef = new BytesRef(inputValues[i]);
