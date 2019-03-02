@@ -1,5 +1,7 @@
 package com.thread.ta1;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,23 +31,66 @@ public class Demo {
 	
 	public static void main(String[] args) {
 		Demo d = new Demo();
-		
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				d.a();
-			}
-		}).start();
-		
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				d.b();
-//			}
-//		}).start();
+		new Thread( () -> d.a() ).start();
 		
 	}
+
+	public static class MyLock implements Lock {
+
+		private boolean isLocked = false;
+
+		private Thread lockBy = null;
+
+		private int lockCount = 0;
+
+		@Override
+		public synchronized void lock() {
+			Thread currentThread = Thread.currentThread(); // Thread-0
+
+			while (isLocked && currentThread != lockBy)
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			isLocked = true;
+			lockBy = currentThread;
+			lockCount ++; // 1   2
+		}
+
+		@Override
+		public synchronized void unlock() {
+			if(lockBy == Thread.currentThread()) {
+				lockCount --;  // 1  0
+
+				if(lockCount == 0) {
+					notify();
+					isLocked = false;
+				}
+			}
+		}
+
+		@Override
+		public void lockInterruptibly() throws InterruptedException {
+
+		}
+
+		@Override
+		public boolean tryLock() {
+			return false;
+		}
+
+		@Override
+		public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+			return false;
+		}
+
+		@Override
+		public Condition newCondition() {
+			return null;
+		}
+
+	}
+
 
 }

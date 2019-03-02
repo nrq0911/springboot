@@ -14,8 +14,6 @@ public class MyLock implements Lock {
 
 	@Override
 	public synchronized void lock() {
-		// ...
-		
 		Thread currentThread = Thread.currentThread(); // Thread-0
 		
 		while (isLocked && currentThread != lockBy)
@@ -53,15 +51,11 @@ public class MyLock implements Lock {
 
 	@Override
 	public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	
-
 	@Override
 	public Condition newCondition() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

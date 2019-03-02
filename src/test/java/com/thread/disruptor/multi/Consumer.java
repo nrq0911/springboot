@@ -16,7 +16,7 @@ public class Consumer implements WorkHandler<Order>{
 
 	@Override
 	public void onEvent(Order order) throws Exception {
-		System.out.println("当前消费者: " + this.consumerId + "，消费信息：" + order.getId());
+		System.err.println("当前消费者: " + this.consumerId + "，消费信息：" + order.getId());
 		count.incrementAndGet();
 	}
 	
