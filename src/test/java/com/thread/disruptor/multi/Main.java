@@ -1,6 +1,5 @@
 package com.thread.disruptor.multi;
 
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 
@@ -8,7 +7,6 @@ import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SequenceBarrier;
-import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.WorkerPool;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -36,11 +34,7 @@ public class Main {
 			consumers[i] = new Consumer("c" + i);
 		}
 		
-		WorkerPool<Order> workerPool = 
-				new WorkerPool<Order>(ringBuffer, 
-						barriers, 
-						new IntEventExceptionHandler(),
-						consumers);
+		WorkerPool<Order> workerPool =  new WorkerPool<>(ringBuffer,  barriers,  new IntEventExceptionHandler(), consumers);
 		
         ringBuffer.addGatingSequences(workerPool.getWorkerSequences());  
         workerPool.start(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));  
@@ -56,8 +50,8 @@ public class Main {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					for(int j = 0; j < 100; j ++){
-						p.onData(UUID.randomUUID().toString());
+					for(int j = 0; j < 1000; j ++){
+						p.onData(Thread.currentThread().getName() + "-" + j);
 					}
 				}
 			}).start();

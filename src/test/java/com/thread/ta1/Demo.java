@@ -29,23 +29,13 @@ public class Demo {
 	
 	public static void main(String[] args) {
 		Demo d = new Demo();
-
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				d.a();
+				new Thread(() -> d.a()).start();
 			}
 		}).start();
-		
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				d.b();
-//			}
-//		}).start();
-		
 	}
 
 }
