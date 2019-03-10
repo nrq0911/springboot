@@ -3,6 +3,7 @@ package com.sort;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 
 public class SortTest {
@@ -27,7 +28,13 @@ public class SortTest {
         QuickSort.quickSort(array2, 0, array2.length - 1);
         System.out.println("排序后的数组：" + Arrays.toString(array2));
 
+    }
 
+    public static void main(String[] args) {
+        Thread thread =  new Thread( () -> {while(true){}});
+        thread.setDaemon(true);
+        thread.start();
+        System.out.println("main thread is over");
     }
 
 }

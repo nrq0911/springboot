@@ -4,9 +4,10 @@ public class ThreadLocalDemo {
 
 	private ThreadLocal<Integer> count = new ThreadLocal<Integer>() {
 		protected Integer initialValue() {
-			return new Integer(0);
+			return 0;
 		};
 	};
+	private ThreadLocal<String> string = new InheritableThreadLocal<>();
 
 	public int getNext() {
 		Integer value = count.get();
@@ -15,13 +16,17 @@ public class ThreadLocalDemo {
 		return value;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ThreadLocalDemo d = new ThreadLocalDemo();
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (true) {
+					d.string.set("123123");
+					d.count.set(200);
 					System.out.println(Thread.currentThread().getName() + " " + d.getNext());
+					System.out.println(d.count.get() + " " + d.string.get());
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
@@ -43,6 +48,9 @@ public class ThreadLocalDemo {
 				}
 			}
 		}).start();
+
+		Thread.sleep(3000);
+		System.err.println(d.string.get());
 	}
 
 }
