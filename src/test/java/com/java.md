@@ -13,7 +13,8 @@
 ## 6.什么是Java指令重排序？
 	java内存模型允许编辑器和处理器对指令进行重排序以提高性能，并且只会对不存在数据依赖性的指令重排序。
 ## 7.Java中Synchronized关键字的内存语义是什么
-	1)进入synchronized块的内存语义是把在synchronized块内使用到的共享变量从线程的工作内存中清除，这样在synchronized块内使用到该变量时就不会从线程的工作内存中获取，而是直接从主内存中获取；
+	1)进入synchronized块的内存语义是把在synchronized块内使用到的共享变量从线程的工作内存中清除，
+	    这样在synchronized块内使用到该变量时就不会从线程的工作内存中获取，而是直接从主内存中获取；
 	2)退出synchronized块的内存语义是把在synchronized块内对共享变量的修改刷新到主内存。
 ## 8.Java中Volatile关键字的内存语义是什么？
 	当线程写入了volatile变量时把工作内存的变量值同步到主内存，读取volatile变量内存语义是先清除本地内存变量值，再从主内存获取最新值。
@@ -42,7 +43,8 @@
 ## 17.讲讲独占锁 ReentrantLock 原理？
 
 ## 18.谈谈读写锁 ReentrantReadWriteLock 原理？
-	
+	读锁
+	写锁
 ## 19.StampedLock 锁原理的理解？
 	每次获取锁的时候都是
 ## 20.谈下对基于链表的非阻塞无界队列 ConcurrentLinkedQueue 原理的理解？
@@ -54,18 +56,20 @@
 ## 23.阻塞队列LinkedBlockingQueue 内部是如何使用两个独占锁 ReentrantLock 以及对应的条件变量保证多线程先入队出队操作的线程安全？
 
 ## 24.分析下JUC 中倒数计数器 CountDownLatch 的使用与原理？
-
+    
 ## 25.CountDownLatch 与线程的 Join 方法区别是什么？
-	1. 调用子线程的join()方法后，该线程会被阻塞知道子线程运行完毕，而countDownLatch则使用计数器来允许子线程运行结束或者运行中减数递减，可以在子线程运行的时候让await()方法返回而不一定必须等到线程结束；
+	1. 调用子线程的join()方法后，该线程会被阻塞知道子线程运行完毕，而countDownLatch则使用计数器来允许子线程运行结束或者运行中减数递减，
+	   可以在子线程运行的时候让await()方法返回而不一定必须等到线程结束；
 	2. 使用线程池来管理线程时一般都是直接添加Runnable到线程池，这个时候join就无法使用了，CountDownLatch 线程同步控制更灵活。
 ## 26.讲讲对JUC 中回环屏障 CyclicBarrier 的使用？
-
+    让一组线程同时达到一个状态后同时执行，并且重置，且可重用。
 ## 27.CyclicBarrier内部的实现与 CountDownLatch 有何不同？
-
+    CyclicBarrier 使用的是reentranLock 的独占锁来实现的，parties为记录线程个数，每当有await调用就减一，当计数为0
+    CountDownLatch 使用的是 AQS 的共享方式实现的，每次掉用 await 如果 state > 0 则阻塞，当state = 0 是，唤醒全部阻塞线程
 ## 28.Semaphore 的内部实现是怎样的？
-
+    
 ## 29.并发组件CopyOnWriteArrayList 是如何通过写时拷贝实现并发安全的 List？
-
+    
 # 二、JVM
 ## 1.Java 内存分配？
 	堆、Java虚拟机栈、本地方法栈、程序计数器、方法区、直接内存、运行时常量
@@ -88,11 +92,15 @@
 ## 16.垃圾回收器的基本原理是什么？
 ## 17.垃圾回收器可以马上回收内存吗？有什么办法主动通知虚拟机进行垃圾回收？
 ## 18.深拷贝和浅拷贝？
+    https://www.cnblogs.com/shakinghead/p/7651502.html
 ## 19.System.gc() 和 Runtime.gc() 会做些什么？
 ## 20.什么是分布式垃圾回收（DGC）？它是如何工作的？
 	RMI 子系统实现基于引用计数的“分布式垃圾回收”(DGC)，以便为远程服务器对象提供自动内存管理设施。
-	当客户机创建（序列化）远程引用时，会在服务器端 DGC 上调用 dirty()。当客户机完成远程引用后，它会调用对应的 clean() 方法。
-	针对远程对象的引用由持有该引用的客户机租用一段时间。租期从收到 dirty() 调用开始。在此类租约到期之前，客户机必须通过对远程引用额外调用 dirty() 来更新租约。如果客户机不在租约到期前进行续签，那么分布式垃圾收集器会假设客户机不再引用远程对象。
+	当客户机创建（序列化）远程引用时，会在服务器端 DGC 上调用 dirty()。
+	当客户机完成远程引用后，它会调用对应的 clean() 方法。
+	针对远程对象的引用由持有该引用的客户机租用一段时间。租期从收到 dirty() 调用开始。
+	在此类租约到期之前，客户机必须通过对远程引用额外调用 dirty() 来更新租约。
+	如果客户机不在租约到期前进行续签，那么分布式垃圾收集器会假设客户机不再引用远程对象。
 ## 21.串行（serial）收集器和吞吐量（throughput）收集器的区别是什么？
 ## 22.在 Java 中，对象什么时候可以被垃圾回收？
 ## 23.简述Minor GC 和 Major GC？
@@ -221,13 +229,10 @@
 ## 28.列举出能想到的数据库分库分表策略？
 
 
-
-1.深拷贝、浅拷贝？
-https://www.cnblogs.com/shakinghead/p/7651502.html
-2.threadLocal 线程？
-threadLocal 
 4.hbase的rowkey 设计？ 
+
 5.MongoDB与es的做聚合运算的区别？
+
 6.es的倒排索引与正排索引的区别？
 7.怎么编写一个sparkStreaming程序？
 9.怎么在redis中查下午2点~4点的数据 

@@ -35,36 +35,22 @@ public class CyclicBarrierDemo {
 	public static void main(String[] args) {
 		CyclicBarrierDemo demo = new CyclicBarrierDemo();
 
-		CyclicBarrier barrier = new CyclicBarrier(10, new Runnable() {
-			@Override
-			public void run() {
-				System.out.println("�ã����ǿ�ʼ����...");
-			}
-		});
+		CyclicBarrier barrier = new CyclicBarrier(10, () -> System.err.println("到达会议室，开始开会...") );
 
-		for (int i = 0; i < 10; i++) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					demo.meeting(barrier);
-				}
-			}).start();
+		for (int i = 0; i < 20; i++) {
+			new Thread(() -> demo.meeting(barrier)).start();
 		}
 		
-		// ��صȴ��߳���
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					System.out.println("�ȴ����߳��� " + barrier.getNumberWaiting());
-					System.out.println("is broken " + barrier.isBroken());
+		// 查看 barrier 状态
+		new Thread( () -> {
+			while(true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+				System.out.println("等待线程 " + barrier.getNumberWaiting());
+				System.out.println("is broken " + barrier.isBroken());
 			}
 		}).start();
 	}
