@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.domain.UserCreateFrom;
 import com.example.service.UserService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * Created by nrq on 2016/12/24.

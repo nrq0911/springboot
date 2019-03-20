@@ -1,5 +1,6 @@
 package com.thread.a;
 
+import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -10,7 +11,7 @@ public class AtomicIntegerDemo {
 	private AtomicInteger value  = new AtomicInteger(0);
 	
 	private int [] s = {2,1,4,6};
-	
+
 	AtomicIntegerArray a = new AtomicIntegerArray(s);
 	AtomicReference<User> user = new AtomicReference<>();
 	AtomicIntegerFieldUpdater<User> old =  AtomicIntegerFieldUpdater.newUpdater(User.class, "old");
