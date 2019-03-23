@@ -1,4 +1,6 @@
 package com.classloader;
 
-public class Hello {
+public interface Hello {
+
+    void say (String s);
 }
