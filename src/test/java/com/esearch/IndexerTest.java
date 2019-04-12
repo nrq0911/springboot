@@ -38,7 +38,7 @@ public class IndexerTest {
         long start = System.currentTimeMillis();
 
         Article article = new Article();
-        article.setId(1);
+        article.setId(2);
         article.setTitle("Hello world");
         article.setContent("welcome to Shanghai");
         new IndexDao().save(article);

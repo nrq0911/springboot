@@ -16,7 +16,7 @@ public class Server {
 
 	public static void main(String[] args) throws Exception{
 		
-		EventLoopGroup pGroup = new NioEventLoopGroup();
+		EventLoopGroup pGroup = new NioEventLoopGroup(2);
 		EventLoopGroup cGroup = new NioEventLoopGroup();
 		
 		ServerBootstrap b = new ServerBootstrap();
@@ -35,8 +35,10 @@ public class Server {
 		});
 		
 		ChannelFuture cf = b.bind(8765).sync();
-		
+		ChannelFuture cf2 = b.bind(8766).sync();
+
 		cf.channel().closeFuture().sync();
+		cf2.channel().closeFuture().sync();
 		pGroup.shutdownGracefully();
 		cGroup.shutdownGracefully();
 		

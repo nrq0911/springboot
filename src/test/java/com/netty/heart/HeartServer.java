@@ -15,7 +15,7 @@ public class HeartServer {
 
 	public static void main(String[] args) throws Exception{
 		
-		EventLoopGroup pGroup = new NioEventLoopGroup();
+		EventLoopGroup pGroup = new NioEventLoopGroup(1);
 		EventLoopGroup cGroup = new NioEventLoopGroup();
 		
 		ServerBootstrap b = new ServerBootstrap();

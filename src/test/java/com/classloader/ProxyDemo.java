@@ -16,7 +16,7 @@ public class ProxyDemo {
     @Test
     public void proxy () {
 
-        new StaticProxiedHello().say("static proxy");
+        /*new StaticProxiedHello().say("static proxy");
 
         System.out.println("\t\t\t\t\t\t 分割线 \t\t\t\t\t\t");
 
@@ -24,7 +24,7 @@ public class ProxyDemo {
         hello.say("dynamic proxy");
         System.err.println(hello.getClass());
 
-        System.out.println("\t\t\t\t\t\t 分割线 \t\t\t\t\t\t");
+        System.out.println("\t\t\t\t\t\t 分割线 \t\t\t\t\t\t");*/
 
         Class<?> clazz = HelloImpl.class;
         HelloImpl cglibHello =  (HelloImpl) new CglibProxy().newProxyInstance(clazz);

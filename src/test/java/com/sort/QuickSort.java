@@ -31,4 +31,29 @@ public class QuickSort {
         quickSort(a, i + 1, high);
     }
 
+    public static int [] quickSort1 (int [] ins, int start, int end) {
+        if(start>=end){
+            return ins;//这个返回值并没有影响，因为这个返回值没有使用到。
+        }
+        int mid = ins[start];
+        int low = start;
+        int hight = end;
+        while(low < hight){
+            while(low < hight && ins[hight]>=mid){//
+                hight -=1;
+            }
+            ins[low] = ins[hight];
+
+            while(low < hight && ins[low] < mid){
+                low +=1;
+            }
+            ins[hight] = ins[low];
+        }
+        ins[low] = mid;
+        quickSort1(ins, start, low-1);
+        quickSort1(ins, low+1, end);
+
+        return ins;
+    }
+
 }
