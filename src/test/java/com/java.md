@@ -436,13 +436,17 @@ CAP三个特性只能满足其中两个，那么取舍的策略就共有三种�
 1、扯了下项目、讲一下项目经历
 
 2、你们用了redis，redis的底层数据结构了解多少？
+
 http://www.cnblogs.com/jaycekon/p/6227442.html
 http://www.cnblogs.com/jaycekon/p/6277653.html
+
 3、知道动态字符串sds的优缺点么？
 注:sds为redis底层数据结构之一  http://www.cnblogs.com/jaycekon/p/6227442.html
+
 4、redis的单线程特性有什么优缺点？
 https://www.cnblogs.com/shamo89/p/8352084.html
 https://blog.csdn.net/weixin_42295141/article/details/81380633
+
 5、用过 Redis 的哪些数据结构, 分别用在什么场景?
 	String  缓存 常规计数：微博数，粉丝数等 共享session
 	hash 用户信息，商品信息
@@ -450,6 +454,7 @@ https://blog.csdn.net/weixin_42295141/article/details/81380633
 	set 共同好友，二度好友，tag交集,去重
 	sortSet 排行榜
 	https://blog.csdn.net/QIAOBAO2018/article/details/80925083
+
 6、你们怎么解决缓存击穿问题的？
 缓存穿透是指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。
 如何避免？
@@ -511,6 +516,13 @@ https://www.cnblogs.com/lexiaofei/p/7761982.html
 
 10、用过docker么，对容器了解多少
 
+#### 如何设计一个秒杀系统？要考虑什么？
+    -- 瞬时并发高
+    -- 超卖问题
+    -- 性能
+    前端：页面静态化 + CDN 、 禁止重复提交 、 用户限流（一段时间内只能提交一次）
+    后端：服务限流降级、限制单个用户的访问频率、库存相关的读请求放入缓存、MQ、数据库在分表。
+    缓存，异步，限流
 
 
 

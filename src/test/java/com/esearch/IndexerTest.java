@@ -6,6 +6,7 @@ import com.example.model.QueryResult;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Random;
 
 public class IndexerTest {
 
@@ -25,9 +26,10 @@ public class IndexerTest {
         long start = System.currentTimeMillis();
 
         Article article = new Article();
-        article.setId(1);
-        article.setTitle("Hello world");
-        article.setContent("welcome to china");
+        Random random = new Random();
+        article.setId(random.nextInt());
+        article.setTitle("Hello world" + random.nextInt());
+        article.setContent("welcome to china" + random.nextInt());
         new IndexDao().save(article);
 
         System.out.println("花费了" + (System.currentTimeMillis() - start) + " 毫秒");
