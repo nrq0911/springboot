@@ -7,6 +7,8 @@ public class NettyTest {
     public static void main(String[] args) {
         int i = SystemPropertyUtil.getInt("io.netty.selectorAutoRebuildThreshold", 512);
         System.out.println(i);
+
+        System.out.println(new Object().hashCode());
     }
 
 }
