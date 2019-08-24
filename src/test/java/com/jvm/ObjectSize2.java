@@ -52,5 +52,10 @@ public class ObjectSize2 {
         System.out.println(RamUsageEstimator.shallowSizeOf(new ObjectSize.C()));
         System.out.println(RamUsageEstimator.shallowSizeOf(new ObjectSize.D()));
 
+
+
+        System.out.println("thread size: " + RamUsageEstimator.shallowSizeOf(new Thread()));
+
+
     }
 }

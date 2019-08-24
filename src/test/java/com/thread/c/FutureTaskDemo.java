@@ -3,7 +3,7 @@ package com.thread.c;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-public class CallableDemo {
+public class FutureTaskDemo {
 
 	/**
 	 * Callalbe和Runnable的区别

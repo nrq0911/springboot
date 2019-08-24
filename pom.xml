@@ -25,6 +25,7 @@
 		<elasticsearch.version>5.6.4</elasticsearch.version>
 		<lucene.version>6.6.1</lucene.version>
 		<log4j.version>2.7</log4j.version>
+		<dubbo.version>2.6.4</dubbo.version>
 	</properties>
 
 	<dependencies>
@@ -46,6 +47,31 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.netty</groupId>
+					<artifactId>netty</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<!--Mysql / DataSource-->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

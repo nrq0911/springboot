@@ -41,22 +41,22 @@
 ## 16.并发包中锁的实现底层（对AQS的理解）？
 
 ## 17.讲讲独占锁 ReentrantLock 原理？
-
+    AQS
 ## 18.谈谈读写锁 ReentrantReadWriteLock 原理？
 	读锁
 	写锁
 ## 19.StampedLock 锁原理的理解？
 	每次获取锁的时候都是
 ## 20.谈下对基于链表的非阻塞无界队列 ConcurrentLinkedQueue 原理的理解？
-
+    CAS 单向链表 
 ## 21.ConcurrentLinkedQueue 内部是如何使用 CAS 非阻塞算法来保证多线程下入队出队操作的线程安全？
-
+    CAS 控制出队和入队 单向链表
 ## 22.基于链表的阻塞队列 LinkedBlockingQueue 原理。
-
+    AQS 独占锁 单向链表 
 ## 23.阻塞队列LinkedBlockingQueue 内部是如何使用两个独占锁 ReentrantLock 以及对应的条件变量保证多线程先入队出队操作的线程安全？
-
+    putLock 入队 takeLock 出队 condition
 ## 24.分析下JUC 中倒数计数器 CountDownLatch 的使用与原理？
-    
+    AQS共享锁
 ## 25.CountDownLatch 与线程的 Join 方法区别是什么？
 	1. 调用子线程的join()方法后，该线程会被阻塞知道子线程运行完毕，而countDownLatch则使用计数器来允许子线程运行结束或者运行中减数递减，
 	   可以在子线程运行的时候让await()方法返回而不一定必须等到线程结束；
@@ -67,9 +67,10 @@
     CyclicBarrier 使用的是reentranLock 的独占锁来实现的，parties为记录线程个数，每当有await调用就减一，当计数为0
     CountDownLatch 使用的是 AQS 的共享方式实现的，每次掉用 await 如果 state > 0 则阻塞，当state = 0 是，唤醒全部阻塞线程
 ## 28.Semaphore 的内部实现是怎样的？
-    
+    AQS计数器, 共享锁
 ## 29.并发组件CopyOnWriteArrayList 是如何通过写时拷贝实现并发安全的 List？
-    
+    ReentrantLock copy list 到一个新的数组操作完在写回去
+    CopyOnWriteArraySet 底层是 CopyOnWriteArrayList
 # 二、JVM
 ## 1.Java 内存分配？
 	堆、Java虚拟机栈、本地方法栈、程序计数器、方法区（Java8去掉）、直接内存、运行时常量
@@ -90,6 +91,7 @@
     加载 --> 验证 -->  准备 -->  解析 --> 初始化
     加载：通过一个类的全限定名来获取定义此类的二进制流；生成Java.lang.Class对象；     
 ## 7.描述一下 JVM 加载 Class 文件的原理机制?
+    
 ## 8.什么是类加载器？
 ## 9.类加载器有哪些？
 ## 10.什么是tomcat类加载机制？
@@ -103,6 +105,7 @@
 ## 18.深拷贝和浅拷贝？
     https://www.cnblogs.com/shakinghead/p/7651502.html
 ## 19.System.gc() 和 Runtime.gc() 会做些什么？
+    主动回收垃圾
 ## 20.什么是分布式垃圾回收（DGC）？它是如何工作的？
 	RMI 子系统实现基于引用计数的“分布式垃圾回收”(DGC)，以便为远程服务器对象提供自动内存管理设施。
 	当客户机创建（序列化）远程引用时，会在服务器端 DGC 上调用 dirty()。
@@ -123,26 +126,165 @@
 
 # 三、Spring
 ## 1.为什么需要代理模式？
+    事务增强
 ## 2.讲讲静态代理模式的优点及其瓶颈？
+    优点: 可以做到在不修改目标对象的功能前提下,对目标功能扩展.
+    缺点: 因为代理对象需要与目标对象实现一样的接口,所以会有很多代理类,类太多.同时,一旦接口增加方法,目标对象与代理对象都要维护.
 ## 3.对Java 接口代理模式的实现原理的理解？
+    1、通过实现InvocationHandlet接口创建自己的调用处理器
+    2、通过为Proxy类指定ClassLoader对象和一组interface来创建动态代理
+    3、通过反射机制获取动态代理类的构造函数，其唯一参数类型就是调用处理器接口类型
+    4、通过构造函数创建动态代理类实例，构造时调用处理器对象作为参数参入
 ## 4.如何使用 Java 反射实现动态代理？
+    JDK动态代理：通过实现InvocationHandlet接口，并重写里面的invoke方法，通过为proxy类指定classLoader和一组interfaces来创建动态代理
 ## 5.Java 接口代理模式的指定增强？
+    在invoke方法上添加逻辑
 ## 6.谈谈对Cglib 类增强动态代理的实现？
+    CGLib采用了非常底层的字节码技术，其原理是通过字节码技术为一个类创建子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。
 ## 7.怎么理解面向切面编程的切面？
+    可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+    主要的功能是：日志记录，性能统计，安全控制，事务处理，异常处理等等。
 ## 8.讲解OOP与AOP的简单对比？
-## 9.讲解JDK 动态代理和 CGLIB 代理原理以及区别？
-## 10.讲解Spring 框架中基于 Schema 的 AOP 实现原理？
-## 11.讲解Spring 框架中如何基于 AOP 实现的事务管理？
-## 12.谈谈对控制反转的设计思想的理解？
-## 13.怎么理解 Spring IOC 容器？
-## 14.Spring IOC 怎么管理 Bean 之间的依赖关系，怎么避免循环依赖？
-## 15.对Spring IOC 容器的依赖注入的理解？
-## 16.说说对Spring IOC 的单例模式和高级特性？
-## 17.BeanFactory 和 FactoryBean 有什么区别？
-## 18.BeanFactory 和 ApplicationContext 又有什么不同？
-## 19.Spring 在 Bean 创建过程中是如何解决循环依赖的？
-## 20.谈谈Spring Bean 创建过程中的设计模式？
+    AOP: (Aspect Oriented Programming) 面向切面编程。
+    是目前软件开发中的一个热点，也是Spring框架中容。
+    利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+    主要的功能是：日志记录，性能统计，安全控制，事务处理，异常处理等等。
+    AOP、OOP在字面上虽然非常类似，但却是面向不同领域的两种设计思想。
+        OOP（面向对象编程）针对业务处理过程的实体及其属性和行为进行抽象封装，以获得更加清晰高效的逻辑单元划分。
+        而AOP则是针对业务处理过程中的切面进行提取，它所面对的是处理过程中的某个步骤或阶段，以获得逻辑过程中各部分之间低耦合性的隔离效果。
+    这两种设计思想在目标上有着本质的差异。
 
+    举个简单的例子，对于“雇员”这样一个业务实体进行封装，自然是OOP的任务，我们可以为其建立一个“Employee”类，并将“雇员”相关的属性和行为封装其中。而用AOP设计思想对“雇员”进行封装将无从谈起。
+ 
+    同样，对于“权限检查”这一动作片断进行划分，则是AOP的目标领域。而通过OOP对一个动作进行封装，则有点不伦不类。 换而言之，OOP面向名词领域，AOP面向动词领域。
+    总之，AOP可以通过预编译方式和运行期动态代理实现在不修改源代码的情况下给程序动态统一添加功能的一种技术，把散落在程序中的公共部分提取出来，做成切面类，
+    这样的好处在于，代码的可重用，一旦涉及到该功能的需求发生变化，只要修改该代码就行，否则，你要到处修改，如果只要修改1、2处那还可以接受，万一有1000处呢。
+
+    最常用的AOP应用在数据库连接以及事务处理上。
+## 9.讲解JDK 动态代理和 CGLIB 代理原理以及区别？
+    JDK代理是不需要第三方库支持，只需要JDK环境就可以进行代理，使用条件:
+        1、实现InvocationHandler 
+        2、使用Proxy.newProxyInstance产生代理对象
+        3、被代理的对象必须要实现接口
+    
+    CGLib必须依赖于CGLib的类库，但是它需要类来实现任何接口代理的是指定的类生成一个子类，
+        覆盖其中的方法，是一种继承但是针对接口编程的环境下推荐使用JDK的代理；
+## 10.讲解Spring 框架中基于 Schema 的 AOP 实现原理？
+    
+## 11.讲解Spring 框架中如何基于 AOP 实现的事务管理？
+    1.获取事务属性
+    2.加载配置中的transactionManger
+    3.针对不同的事务处理方式使用不同的逻辑
+    4.在目标方法执行前获取事务并收集事务信息
+    5.执行目标方法
+    6.一旦出现异常，尝试异常处理
+    7.提交事务前的事务信息的清楚
+    8.提交事务
+    TransactionAttributeSourcePointcut：用于判断哪些bean需要织入当前的事务逻辑。
+    TransactionInterceptor
+## 12.谈谈对控制反转的设计思想的理解？
+    解耦，降低开发难度
+## 13.怎么理解 Spring IOC 容器？
+
+## 14.Spring IOC 怎么管理 Bean 之间的依赖关系，怎么避免循环依赖？
+    
+## 15.对Spring IOC 容器的依赖注入的理解？
+
+## 16.说说对Spring IOC 的单例模式和高级特性？
+    
+## 17.BeanFactory 和 FactoryBean 有什么区别？
+    都是接口
+    BeanFactory是个Factory，也就是IOC容器或对象工厂，FactoryBean是个Bean。
+    在Spring中，所有的Bean都是由BeanFactory(也就是IOC容器)来进行管理的。
+    但对FactoryBean而言，这个Bean不是简单的Bean，而是一个能生产或者修饰对象生成的工厂Bean,它的实现与设计模式中的工厂模式和修饰器模式类似。 
+## 18.BeanFactory 和 ApplicationContext 又有什么不同？
+    BeanFactory：Spring里面最低层的接口，提供了最简单的容器的功能，只提供了实例化对象和拿对象的功能。
+    BeanFactory在启动的时候不会去实例化Bean，中有从容器中拿Bean的时候才会去实例化；
+    ApplicationContext：应用上下文，继承BeanFactory接口，它是Spring的一各更高级的容器，提供了更多的有用的功能.
+    ApplicationContext在启动的时候就把所有的Bean全部实例化了。它还可以为Bean配置lazy-init=true来让Bean延迟实例化； 
+    AOP,web应用，国际化，消息发送和响应机制
+## 19.Spring 在 Bean 创建过程中是如何解决循环依赖的？
+    这里我们一定要将创建一个完整的bean和创建一个bean的实例区分开来：
+    
+    创建一个完整的bean：是指在bean的生命周期里，这个bean已经可以正常使用了，是我们通过getBean方法返回而得到的bean。
+    创建一个bean的实例：是指bean类被实例化，例如Cat类，通过反射创建了cat的实例。
+        但是创建了bean的实例之后，并不代表这个bean已经就可以被正常使用了，Spring对bean的实例还有很多后续操作，例如应用后处理器，填充bean的属性等。
+        但是如果这个bean被检测到可以循环依赖的话，那么在创建其实例完成时候，就会将其实例缓存到earlySingletonObjects对象中，
+        提前暴露一个ObjectFactory对象，那么我们就可以通过ObjectFactory的getObject方法去获取bean的实例，从而解决循环依赖。
+##### Setter循环依过程赖简要分析：
+   假如ClassA依赖ClassB，ClassB依赖ClassA，那么这两个类之间形成了一个循环依赖
+当创建ClassA时，首先通过其无参构造方法创建bean的实例，提前暴露ObjectFactory，并将其实例放入到earlySingletonObjects（当前创建bean池）中。
+然后填充bean的属性，通过Setter方法注入ClassB。
+对于ClassB，其创建过程跟创建ClassA一样，但是当其通过Setter方法去注入ClassA时，因为ClassA的实例已经提前暴露，
+所以可以通过getObject方法去获取ClassA的实例，从而解决了循环依赖
+
+构造器的循环依赖问题无法解决，只能拋出BeanCurrentlyInCreationException异常，在解决属性循环依赖时，spring采用的是提前暴露对象的方法。
+
+    Spring的单例对象的初始化主要分为三步： 
+    （1）createBeanInstance：实例化，其实也就是调用对象的构造方法实例化对象
+    （2）populateBean：填充属性，这一步主要是多bean的依赖属性进行填充
+    （3）initializeBean：调用spring xml中的init 方法。
+    从上面单例bean的初始化可以知道：
+        循环依赖主要发生在第一、二步，也就是构造器循环依赖和field循环依赖。
+        那么我们要解决循环引用也应该从初始化过程着手，对于单例来说，在Spring容器整个生命周期内，
+        有且只有一个对象，所以很容易想到这个对象应该存在Cache中，Spring为了解决单例的循环依赖问题，使用了三级缓存。
+    这三级缓存分别指： 
+        singletonFactories ： 单例对象工厂的cache 
+        earlySingletonObjects ：提前暴光的单例对象的Cache 
+        singletonObjects：单例对象的cache
+    在创建bean的时候，首先想到的是从cache中获取这个单例的bean，这个缓存就是singletonObjects。
+    如果获取不到，并且对象正在创建中，就再从二级缓存earlySingletonObjects中获取。
+    如果还是获取不到且允许singletonFactories通过getObject()获取，就从三级缓存singletonFactory.getObject()(三级缓存)获取，
+    如果获取到了则：从singletonFactories中移除，并放入earlySingletonObjects中。其实也就是从三级缓存移动到了二级缓存。
+
+从上面三级缓存的分析，我们可以知道，Spring解决循环依赖的诀窍就在于singletonFactories这个三级cache。
+这个cache的类型是ObjectFactory。这里就是解决循环依赖的关键，发生在createBeanInstance之后，也就是说单例对象此时已经被创建出来(调用了构造器)。
+这个对象已经被生产出来了，虽然还不完美（还没有进行初始化的第二步和第三步），但是已经能被人认出来了（根据对象引用能定位到堆中的对象），
+所以Spring此时将这个对象提前曝光出来让大家认识，让大家使用。
+这样做有什么好处呢？让我们来分析一下“A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象”这种循环依赖的情况。
+A首先完成了初始化的第一步，并且将自己提前曝光到singletonFactories中，
+此时进行初始化的第二步，发现自己依赖对象B，此时就尝试去get(B)，发现B还没有被create，
+所以走create流程，B在初始化第一步的时候发现自己依赖了对象A，于是尝试get(A)，
+尝试一级缓存singletonObjects(肯定没有，因为A还没初始化完全)，
+尝试二级缓存earlySingletonObjects（也没有），
+尝试三级缓存singletonFactories，
+由于A通过ObjectFactory将自己提前曝光了，
+所以B能够通过ObjectFactory.getObject拿到A对象(虽然A还没有初始化完全，但是总比没有好呀)，
+B拿到A对象后顺利完成了初始化阶段1、2、3，完全初始化之后将自己放入到一级缓存singletonObjects中。
+此时返回A中，A此时能拿到B的对象顺利完成自己的初始化阶段2、3，最终A也完成了初始化，
+进去了一级缓存singletonObjects中，而且更加幸运的是，由于B拿到了A的对象引用，所以B现在hold住的A对象完成了初始化。
+知道了这个原理时候，肯定就知道为啥Spring不能解决“A的构造方法中依赖了B的实例对象，同时B的构造方法中依赖了A的实例对象”这类问题了！
+因为加入singletonFactories三级缓存的前提是执行了构造器，所以构造器的循环依赖没法解决。
+
+#####.基于构造器的循环依赖    
+Spring容器会将每一个正在创建的Bean 标识符放在一个“当前创建Bean池”中，Bean标识符在创建过程中将一直保持在这个池中，
+因此如果在创建Bean过程中发现自己已经在“当前创建Bean池”里时将抛出BeanCurrentlyInCreationException异常表示循环依赖；
+而对于创建完毕的Bean将从“当前创建Bean池”中清除掉。
+Spring容器先创建单例A，A依赖B，然后将A放在“当前创建Bean池”中，此时创建B,B依赖C ,然后将B放在“当前创建Bean池”中,此时创建C，C又依赖A， 
+但是，此时A已经在池中，所以会报错，，因为在池中的Bean都是未初始化完的，所以会依赖错误 ，（初始化完的Bean会从池中移除）
+
+####.基于setter属性的循环依赖
+![avatar](img/spring-bean.png)
+我们结合上面那张图看，Spring先是用构造实例化Bean对象 ，创建成功后，Spring会通过以下代码提前将对象暴露出来，此时的对象A还没有完成属性注入，属于早期对象，
+此时Spring会将这个实例化结束的对象放到一个Map中，并且Spring提供了获取这个未设置属性的实例化对象引用的方法。 
+结合我们的实例来看，当Spring实例化了A、B、C后，紧接着会去设置对象的属性，此时A依赖B，就会去Map中取出存在里面的单例B对象，
+以此类推，不会出来循环的问题喽
+
+## 20.谈谈Spring Bean 创建过程中的设计模式？
+    代理模式，工厂模式
+## 21、Spring5 新特性
+    1、依赖 JDK 8+和 Java EE7+以上版本
+    2、首次采用反应式编程模型
+    3、支持使用注解进行编程
+    4、新增函数式编程
+    5、支持使用 REST 断点执行反应式编程
+    6、支持 HTTP 2.07、新增 Kotlin 和 Spring WebFlux
+    8、可使用 Lambda 表达式注册 Bean
+    9、Spring WebMVC 支持最新的 API
+    10、使用 JUnit5 执行条件和并发测试
+    11、使用 Spring WebFlux 执行集成测试
+    12、核心容器优化
+    
 # 四、数据库
 ## 1.MySQL 有哪些存储引擎啊？都有什么区别？
 ## 2.Float、Decimal 存储金额的区别？
@@ -182,14 +324,48 @@
 
 # 五、缓存
 ## 1.redis数据结构有哪些？
+    String,List,Set,ZSet,Hash
 ## 2.Redis缓存穿透，缓存雪崩？
-## 3.如何使用Redis来实现分布式锁？
+    穿透：没有命中缓存，请求直接打到MySQL
+    雪崩：缓存宕机，导致一系列的宕机
+## 3.如何使用Redis来实现分布式锁？  
+    
 ## 4.Redis的并发竞争问题如何解决？
 ## 5.Redis持久化的几种方式，优缺点是什么，怎么实现的？
 ## 6.Redis的缓存失效策略？
 ## 7.Redis集群，高可用，原理？
 ## 8.Redis缓存分片？
 ## 9.Redis的数据淘汰策略？
+####定时删除
+    策略 : 在设置键的过期时间的同时，创建一个定时器，让定时器在键的过期时间来临时，立即执行对键的删除操作。
+    优点 : 对内存友好，保证过期键会尽可能快地被删除，并释放过期键所占用的内存。
+    缺点 : 对CPU时间不友好，占用太多CPU时间，影响服务器的响应时间和吞吐量。
+####惰性删除
+    策略 : 放任过期键不管，每次从键空间读写操作时，都检查键是否过期，如果过期，删除该键，如果没有过期，返回该键。
+    优点 : 对CPU时间友好，读写操作键时才对键进行过期检查，删除过期键的操作只会在非做不可的情况下进行。
+    缺点 : 对内存不友好，只要键不删除，就不会释放内存，浪费太多内存，有内存泄漏风险。
+####定期删除
+    策略 :
+    对定时删除策略和惰性删除策略的一种整合和折中。每隔一段时间执行一次定时删除，并通过限制删除操作执行的总时长和总频率来限制删除操作对CPU占用时间的影响。通过定期删除过期键，有效减少了因为过期键而带来的内存浪费。
+    难点：确定删除操作执行的总时长和总频率。执行太频繁，执行时间过长，就会退化成定时删除策略，影响客户端请求效率；执行得太少，执行时间太短，会演变为惰性删除，存在内存浪费的情况。
+    Redis服务器使用惰性删除和定期删除两种策略，通过配合使用，很好地在合理使用CPU时间和避免浪费内存之间取得平衡。
+    
+举例:
+从过期键中随机选取 20 个 key
+遍历这 20 个 key，并对过期的 key进行删除操作
+如果过期的 key 比率超过25%，则重复步骤 1
+同时，为了保证过期扫描不会出现循环过度，导致线程卡死现象，增加了扫描时间的上限，默认不会超过 25ms以及频次上线10次。
+####主动清理
+    当前已用内存超过maxmemory限定时，触发主动清理策略。
+    清理时会根据用户配置的maxmemory-policy来做适当的清理。
+    主动清理策略主要有一下六种:
+        volatile-lru : 从已设置过期时间的数据集(server.db[i].expires)中挑选最近最少使用 的数据淘汰。
+        volatile-ttl : 从已设置过期时间的数据集(server.db[i].expires)中挑选将要过期的数 据淘汰。
+        volatile-random : 从已设置过期时间的数据集(server.db[i].expires)中任意选择数据 淘汰。
+        allkeys-lru : 从数据集(server.db[i].dict)中挑选最近最少使用的数据淘汰。
+        allkeys-random : 从数据集(server.db[i].dict)中任意选择数据淘汰。
+        no-enviction : 禁止驱逐数据。
+
 ## 10.redis队列应用场景？
 ## 11.分布式使用场景（储存session）？
 
@@ -338,7 +514,9 @@ CAP三个特性只能满足其中两个，那么取舍的策略就共有三种�
     ISR（In-Sync Replicas）机制：Kafka使用了这个机制来保证数据一致性。
         ISR认为对于2f+1个副本来说，多数投票机制要求最多只能允许f个副本发生故障，如果要支持2个副本的容错，则需要至少维持5个副本。
 ## 4.什么是一致性Hash？
+    
 ## 5.讲讲分布式事务？
+    
 ## 6.如何实现分布式锁？
     MYSQL,Redis.zookeeper
 ## 7.如何实现分布式 Session?
@@ -357,6 +535,8 @@ CAP三个特性只能满足其中两个，那么取舍的策略就共有三种�
 ## 20.Zookeeper的用途,选举的原理是什么?
     
 ## 21.讲讲数据的垂直拆分水平拆分？
+    垂直切分:指按照业务将表进行分类，分布到不同的数据库上面
+    水平切分:按照数据行的切分，就是将表中 的某些行切分到一个数据库，而另外的某些行又切分到其他的数据库中。
 ## 22.zookeeper原理和适用场景？
     Zookeeper 的核心是原子广播，这个机制保证了各个Server之间的同步。
     实现这个机制的协议叫做Zab协议。Zab协议有两种模式，它们分别是恢复模式（选主）和广播模式（同步）。
@@ -402,8 +582,9 @@ CAP三个特性只能满足其中两个，那么取舍的策略就共有三种�
 ## 26.用过哪些MQ,怎么用的,和其他mq比较有什么优缺点,MQ的连接是线程安全的吗？
     https://blog.csdn.net/chang384915878/article/details/86741181
 ## 27.MQ系统的数据如何保证不丢失？
+    ack机制
 ## 28.列举出能想到的数据库分库分表策略？
-
+    垂直，水平
 
 4.hbase的rowkey 设计？ 
 
@@ -414,8 +595,6 @@ CAP三个特性只能满足其中两个，那么取舍的策略就共有三种�
 9.怎么在redis中查下午2点~4点的数据 
 10.如何用shell命令替换1234 为abc ? 
 11.jps 下面有很多进程，如何用一条命令全部杀死？
-12.scala 如何实现 a.方法？ 比如实现截取的方法，用.来调用。
-13.spark 中如果接入一个redis连接对象，放什么位置？如果是在partion中，多次的创建浪费资源，如何避免？
 
 2、你们项目中微服务是怎么划分的，划分粒度怎么确定？
 
@@ -471,8 +650,10 @@ https://blog.csdn.net/weixin_42295141/article/details/81380633
 
 7、Hystrix的隔离机制有哪些？Hystrix常见配置是哪些？
 https://www.cnblogs.com/lexiaofei/p/7761982.html
-8、自己做过哪些调优？JVM调优、数据库调优都行！
+8、自己做过哪些调优？
 
+
+1、JVM调优、数据库调优都行！
 
 2、平时会用到哪些数据结构？
 
@@ -488,7 +669,7 @@ https://www.cnblogs.com/lexiaofei/p/7761982.html
 
 8、RPC和HTTP的关系是什么？
 
-9、知道HTTP1.0和1.1的区别么？
+9、知道HTTP1.1和2的区别么？
 
 10、谈谈什么是HTTP的长连接和短连接？
 
@@ -524,5 +705,16 @@ https://www.cnblogs.com/lexiaofei/p/7761982.html
     后端：服务限流降级、限制单个用户的访问频率、库存相关的读请求放入缓存、MQ、数据库在分表。
     缓存，异步，限流
 
+### spring 的 CGLIB 和 JDK动态代理
+    1.如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP
+    2.如果目标对象实现了接口，可以强制使用CGLIB实现AOP
+    3.如果目标对象没有实现接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换
+### 如何强制使用CGLIB实现AOP
+    1.添加CGLIB库
+    2.配置proxy-target-class为true
+### JDK动态代理和CGLIB字节码生成的区别？
+    1.JDK动态代理只能对实现了接口的类生成代理，不能针对类
+    2.CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的的方法，因为是集成，不能对final类代理
+    
 
 
