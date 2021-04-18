@@ -4,7 +4,6 @@ import com.alibaba.dubbo.common.utils.Assert;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.Pictures;
-import com.example.SpringbootApplication;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class CreateWord {
 
-    private static Logger logger = Logger.getLogger(SpringbootApplication.class);
+    private static Logger logger = Logger.getLogger(CreateWord.class);
 
     public static void main(String[] args) {
         Map<String, Object> params = new HashMap<>();
@@ -157,6 +156,10 @@ public class CreateWord {
     private static List<File>  listAllFiles(String filePath) {
         List<File> fileList = new ArrayList<>();
         File file = new File(filePath);
+
+        if (!file.exists()) {
+            logger.info("file is not exist" + filePath);
+        }
 
         // 扫描文件夹
         if (file.exists() && file.isDirectory()) {
