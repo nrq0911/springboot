@@ -17,11 +17,29 @@ public class CreateWord {
 
     public static void main(String[] args) {
         Map<String, Object> params = new HashMap<>();
-        // 渲染文本
-        params.put("projectName", "XXX工程");
+        // 参数设置
+        params.put("projectName", "星河盛境");
+        params.put("email", "xxx@email.com");
+        params.put("phone", "133xxxxxxxx");
 
-        String basePath = "/Users/nrq/code/springboot/src/main/resources";
+        String basePath = getBasePath();
+        addImgToParam(basePath, params);
 
+        String templatePath = basePath + "/template/template.docx";
+        // 放到项目路径下去
+        String fileDir = basePath.replace("/target/classes", "") + "/output";
+        String fileName = "result";
+
+        String wordPath = createWord(templatePath, fileDir, fileName, params);
+        System.out.println("生成文档路径：" + wordPath);
+    }
+
+    private static String getBasePath() {
+        String resources = CreateWord.class.getClassLoader().getResource("").getPath();
+        return resources.replace("/target/classes", "") + "src/main/resources";
+    }
+
+    private static void addImgToParam(String basePath, Map<String, Object> params) {
         // 渲染图片
         addImgToWord(basePath + "/img/开始图表", "first_img_", 700, 400, params);
 
@@ -37,9 +55,9 @@ public class CreateWord {
 
         addImgToWord(basePath + "/img/项目详情页", "project_details_img_",700, 400, params);
 
-        addImgToWord(basePath + "/img/项目详情手机页", "project_details_phone_img_",350, 500, params);
+        addImgToWord(basePath + "/img/项目详情手机页", "project_details_phone_img_",350, 550, params);
 
-        addImgToWord(basePath + "/img/新房列表页右侧橱窗", "new_house_list_right_img_",350, 500, params);
+        addImgToWord(basePath + "/img/新房列表页右侧橱窗", "new_house_list_right_img_",700, 400, params);
 
         addImgToWord(basePath + "/img/新房房源频道右侧橱窗", "new_house_resources_right_img_",700, 400, params);
 
@@ -49,7 +67,7 @@ public class CreateWord {
 
         addImgToWord(basePath + "/img/活动信息展示+热门活动频道", "activity_channel_img_",700, 400, params);
 
-        addImgToWord(basePath + "/img/活动信息展示+热门活动频道-手机", "activity_channel_img_phone_",350, 500, params);
+        addImgToWord(basePath + "/img/活动信息展示+热门活动频道-手机", "activity_channel_img_phone_",350, 550, params);
 
         addImgToWord(basePath + "/img/竞品项目活动-置业顾问植入", "competitive_project_activity_img_",700, 400, params);
 
@@ -61,15 +79,23 @@ public class CreateWord {
 
         addImgToWord(basePath + "/img/搜索零少结果页优先展示", "home_page_search_less_img_",700, 400, params);
 
-        addImgToWord(basePath + "/img/首页新房推荐", "home_page_new_house_img_",700, 400, params);
+        addImgToWord(basePath + "/img/首页新房推荐", "home_page_new_house_img_",350, 550, params);
 
-        String templatePath = basePath + "/template/template.docx";
-        String fileDir = basePath + "/output";
-        String fileName = "result";
+        addImgToWord(basePath + "/img/新房筛选列表", "new_house_screening_list_img_",700, 400, params);
 
-        String wordPath = createWord(templatePath, fileDir, fileName, params);
-        System.out.println("生成文档路径：" + wordPath);
+        addImgToWord(basePath + "/img/新房筛选列表-手机", "new_house_screening_list_phone_img_",350, 550, params);
+
+        addImgToWord(basePath + "/img/二手房3区域10板块引流", "second_hand_house_drainage_img_",700, 400, params);
+
+        addImgToWord(basePath + "/img/二手房3区域10板块引流-手机", "second_hand_house_drainage_phone_img_",350, 550, params);
+
+        addImgToWord(basePath + "/img/新房移动端（APP、TW）搜索-热搜推荐", "new_house_app_hot_search_img_",700, 400, params);
+
+        addImgToWord(basePath + "/img/免费楼盘单页--推荐合作盘", "new_house_free_cooperation_img_",700, 400, params);
+
+        addImgToWord(basePath + "/img/百度关键词+星盘通+全幕名片", "baidu_keyword_img_",350, 550, params);
     }
+
 
     /**
      * 根据模板填充内容生成word
