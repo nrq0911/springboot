@@ -74,6 +74,7 @@ public class ClearHistoryData {
 
         if (!file.exists()) {
             logger.info("file is not exist" + filePath);
+            file.mkdirs();
             return;
         }
 
